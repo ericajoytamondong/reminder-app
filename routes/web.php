@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReminderController;
+use App\Http\Controllers\AdminUserController; 
 use Illuminate\Support\Facades\Route;
 
 // Guest Routes
@@ -19,12 +20,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     
     // Reminders CRUD Resources
-    Route::get('/reminders', [ReminderController::class, 'index'])->name('reminders.index');
-    Route::get('/reminders/create', [ReminderController::class, 'create'])->name('reminders.create');
-    Route::post('/reminders', [ReminderController::class, 'store'])->name('reminders.store');
-    Route::get('/reminders/{reminder}/edit', [ReminderController::class, 'edit'])->name('reminders.edit');
-    Route::put('/reminders/{reminder}', [ReminderController::class, 'update'])->name('reminders.update');
-    Route::delete('/reminders/{reminder}', [ReminderController::class, 'destroy'])->name('reminders.destroy');
+    Route::resource('reminders', ReminderController::class);
+
+    // User Management CRUD Resources 
+    Route::resource('users', AdminUserController::class);
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 });
