@@ -6,7 +6,6 @@
     <title>Reminder App</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <style>
@@ -16,10 +15,10 @@
         .btn-pink { background-color: #ff3377; color: white; border-radius: 8px; }
         .btn-pink:hover { background-color: #e02262; color: white; }
         
-        /* Responsive Sidebar Configurations */
-        .sidebar { background: white; border-right: 1px solid #f0e4e8; }
+        /* Sidebar Styling fixes for desktop vs mobile */
+        .sidebar { background: white; border-right: 1px solid #f0e4e8; z-index: 100; }
         @media (min-width: 768px) {
-            .sidebar { min-height: 100vh; }
+            .sidebar { min-height: 100vh; position: sticky; top: 56px; }
         }
         .sidebar .nav-link { color: #6c757d; font-weight: 500; padding: 12px 20px; border-radius: 8px; margin: 4px 15px; }
         .sidebar .nav-link.active { background-color: #fff0f5; color: #ff3377; }
@@ -50,15 +49,15 @@
 
     <div class="container-fluid">
         <div class="row">
-            <nav class="col-12 col-md-3 col-lg-2 d-md-block sidebar px-0 pt-2 pt-md-3 collapse navbar-collapse" id="sidebarMenu">
-                <div class="d-flex d-md-none align-items-center px-4 py-3 border-bottom mb-2 w-100">
+            <nav id="sidebarMenu" class="col-12 col-md-3 col-lg-2 sidebar px-0 pt-2 pt-md-3 collapse d-md-block">
+                <div class="d-flex d-md-none align-items-center px-4 py-3 border-bottom mb-2 w-100 bg-light">
                     <div class="rounded-circle bg-pink text-white d-flex align-items-center justify-content-center me-2" style="width:36px; height:36px;">
                         <i class="fa-solid fa-user"></i>
                     </div>
                     <span class="fw-bold text-dark">{{ Auth::user()->name }}</span>
                 </div>
 
-                <div class="position-sticky w-100">
+                <div class="w-100">
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a class="nav-link {{ Request::is('dashboard') ? 'active' : '' }}" href="{{ route('dashboard') }}">
@@ -75,13 +74,11 @@
                                 <i class="fa-solid fa-circle-plus me-2"></i> Add Reminder
                             </a>
                         </li>
-
                         <li class="nav-item">
                             <a class="nav-link {{ Request::is('users*') ? 'active' : '' }}" href="{{ route('users.index') }}">
                                 <i class="fa-solid fa-users me-2"></i> User Management
                             </a>
                         </li>
-
                         <li class="nav-item mt-2 mt-md-4 mb-3">
                             <form action="{{ route('logout') }}" method="POST" id="logout-form">
                                 @csrf
@@ -113,8 +110,8 @@
             position: 'top-end',
             showConfirmButton: false,
             timer: 3000,
-            timerProgressBar
-            });
+            timerProgressBar: true
+        });
         Toast.fire({
             icon: 'success',
             title: "{{ session('toast_success') }}"

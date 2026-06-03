@@ -1,3 +1,5 @@
+<?php
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -6,14 +8,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-class DashboardController extends Controller
+class DashboardController extends Controller 
 {
-    public function index()
+    public function index() 
     {
         $user = Auth::user();
-        
+
         // Auto-update statuses to Overdue
-        $user->reminders()->where('date', '<', Carbon::today())->where('status', 'Upcoming')->update(['status' => 'Overdue']);
+        $user->reminders()
+            ->where('date', '<', Carbon::today())
+            ->where('status', 'Upcoming')
+            ->update(['status' => 'Overdue']);
 
         // Personal User Stats
         $total = $user->reminders()->count();
@@ -27,8 +32,13 @@ class DashboardController extends Controller
         $usersWithoutReminders = $totalSystemUsers - $usersWithReminders;
 
         return view('dashboard.index', compact(
-            'total', 'upcoming', 'overdue', 'completed',
-            'totalSystemUsers', 'usersWithReminders', 'usersWithoutReminders'
+            'total', 
+            'upcoming', 
+            'overdue', 
+            'completed', 
+            'totalSystemUsers', 
+            'usersWithReminders', 
+            'usersWithoutReminders'
         ));
     }
 }

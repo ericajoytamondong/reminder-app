@@ -3,7 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ReminderController;
-use App\Http\Controllers\AdminUserController; 
+use App\Http\Controllers\AdminUserController;
 use Illuminate\Support\Facades\Route;
 
 // Guest Routes
@@ -22,7 +22,7 @@ Route::middleware('auth')->group(function () {
     // Reminders CRUD Resources
     Route::resource('reminders', ReminderController::class);
 
-    // User Management CRUD Resources 
+    // User Management CRUD Resources
     Route::resource('users', AdminUserController::class);
 
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
