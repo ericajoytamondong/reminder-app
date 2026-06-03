@@ -1,24 +1,26 @@
+<?php
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class AdminUserController extends Controller
+class AdminUserController extends Controller 
 {
-    public function index()
+    public function index() 
     {
         // Paginated for high responsiveness on table layouts
         $users = User::withCount('reminders')->paginate(10);
         return view('admin.users.index', compact('users'));
     }
 
-    public function create()
+    public function create() 
     {
         return view('admin.users.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request) 
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -35,12 +37,12 @@ class AdminUserController extends Controller
         return redirect()->route('users.index')->with('toast_success', 'User created successfully!');
     }
 
-    public function edit(User $user)
+    public function edit(User $user) 
     {
         return view('admin.users.edit', compact('user'));
     }
 
-    public function update(Request $request, User $user)
+    public function update(Request $request, User $user) 
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -60,13 +62,14 @@ class AdminUserController extends Controller
         return redirect()->route('users.index')->with('toast_success', 'User updated successfully!');
     }
 
-    public function destroy(User $user)
+    public function destroy(User $user) 
     {
         if ($user->id === auth()->id()) {
             return back()->withErrors('You cannot delete your own session profile.');
         }
 
         $user->delete();
+
         return redirect()->route('users.index')->with('toast_success', 'User purged successfully!');
     }
 }
